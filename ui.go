@@ -15,7 +15,6 @@ func Greeting() string {
 
 func GetValidMove(board []interface{}) int {
 	for {
-		fmt.Println(Display(board))
 		pos := GetUserInput(os.Stdin)
 
 		if IsValidMove(board, pos) {
@@ -27,7 +26,7 @@ func GetValidMove(board []interface{}) int {
 
 func GetUserInput(input io.Reader) int {
 	reader := bufio.NewReader(input)
-	fmt.Print("Enter position (1-9): ")
+	fmt.Print("Place the next move: ")
 	userInput, _ := reader.ReadString('\n')
 	userInput = strings.TrimSpace(userInput)
 	pos, _ := strconv.Atoi(userInput)

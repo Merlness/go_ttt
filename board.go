@@ -14,3 +14,25 @@ func Display(grid []interface{}) string {
 	}
 	return result
 }
+
+func countAvailableMoves(board []interface{}) int {
+	intCount := 0
+	for _, v := range board {
+		if _, isInt := v.(int); isInt {
+			intCount++
+		}
+	}
+	return intCount
+}
+
+func isPlayerOnesTurn(board []interface{}) bool {
+	return countAvailableMoves(board) % 2 != 0
+}
+
+func CurrentPlayerToken(board []interface{}) string {
+
+	if isPlayerOnesTurn(board) {
+		return gameMap.Token1
+	}
+	return gameMap.Token2
+}

@@ -9,20 +9,16 @@ type GameMap struct {
 	Player2 string
 	Token1  string
 	Token2  string
-	Moves   []int
 }
 
 var gameMap = GameMap{
-              	       Player1: "human",
-              	       Player2: "human",
-              	       Token1:  "X",
-              	       Token2:  "O",
-              	       Moves:   []int{},
-                       }
-
-func UpdateMoves(move int) {
-	gameMap.Moves = append(gameMap.Moves, move)
+	Player1: "human",
+	Player2: "human",
+	Token1:  "X",
+	Token2:  "O",
 }
+
+
 
 func main() {
 	board := []interface{}{1, 2, 3, 4, 5, 6, 7, 8, 9}
@@ -30,7 +26,11 @@ func main() {
     fmt.Println(Greeting())
     for {
 		pos := GetValidMove(board)
-        UpdateMoves(pos)
-		board = UpdateBoard(board, pos, "X")
+
+		currentToken := CurrentPlayerToken(board)
+
+		board = UpdateBoard(board, pos, currentToken)
+		fmt.Println(Display(board))
+
 	}
 }

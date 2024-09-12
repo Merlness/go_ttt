@@ -32,3 +32,27 @@ func TestDisplay(t *testing.T) {
 		checkDisplay(t, got, want)
 	})
 }
+
+func TestCurrentPlayerToken(t *testing.T) {
+	board := []interface{}{1, "X", 3, "O", 5, 6, 7, 8, 9}
+
+	t.Run("Player 1's turn when odd number of integers left", func(t *testing.T) {
+		got := CurrentPlayerToken(board)
+		want := gameMap.Token1
+
+		if got != want {
+			t.Errorf("expected %q, got %q", want, got)
+		}
+	})
+
+	board = []interface{}{1, "X", "X", "O", 5, 6, 7, 8, 9}
+
+	t.Run("Player 2's turn when even number of integers left", func(t *testing.T) {
+		got := CurrentPlayerToken(board)
+		want := gameMap.Token2
+
+		if got != want {
+			t.Errorf("expected %q, got %q", want, got)
+		}
+	})
+}

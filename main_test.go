@@ -3,7 +3,6 @@ package main
 import (
         "testing"
         "reflect"
-        "strings"
         )
 
 func resetGameMap() {
@@ -12,7 +11,6 @@ func resetGameMap() {
 		Player2: "human",
 		Token1:  "X",
 		Token2:  "O",
-		Moves:   []int{},
 	}
 }
 
@@ -34,24 +32,10 @@ func TestGlobalGameMap(t *testing.T){
     			Player2: "human",
     			Token1:  "X",
     			Token2:  "O",
-    			Moves:   []int{},
     		}
 
     		if !reflect.DeepEqual(gameMap, expected) {
     			t.Errorf("expected %v, got %v", expected, gameMap)
     		}
     	})
-}
-
-func TestValidMoveUpdatesGameMap(t *testing.T) {
-
-	resetGameMap()
-	input := strings.NewReader("3\n")
-	pos := GetUserInput(input)
-	UpdateMoves(pos)
-
-	expectedMoves := []int{3}
-	if !reflect.DeepEqual(gameMap.Moves, expectedMoves) {
-		t.Errorf("expected moves %v, got %v", expectedMoves, gameMap.Moves)
-	}
 }
