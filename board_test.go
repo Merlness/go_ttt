@@ -56,3 +56,102 @@ func TestCurrentPlayerToken(t *testing.T) {
 		}
 	})
 }
+
+func TestCheckWinner(t *testing.T) {
+	t.Run("Player X wins with the first row", func(t *testing.T) {
+		board := []interface{}{"X", "X", "X", 4, 5, 6, 7, 8, 9}
+		if !CheckWinner(board, "X") {
+			t.Errorf("expected X to win with a row, but got no winner")
+		}
+	})
+
+	t.Run("Player X wins with the middle row", func(t *testing.T) {
+		board := []interface{}{1, 2, 3, "X", "X", "X", 7, 8, 9}
+		if !CheckWinner(board, "X") {
+			t.Errorf("expected X to win with a row, but got no winner")
+		}
+	})
+
+	t.Run("Player O wins with the last row", func(t *testing.T) {
+		board := []interface{}{1, 2, 3, 4, 5, 6,"O", "O", "O"}
+		if !CheckWinner(board, "O") {
+			t.Errorf("expected O to win with a row, but got no winner")
+		}
+	})
+
+	t.Run("Player O wins with the first column", func(t *testing.T) {
+		board := []interface{}{"O", 2, 3, "O", 5, 6,"O", "X", "X"}
+		if !CheckWinner(board, "O") {
+			t.Errorf("expected O to win with a column, but got no winner")
+		}
+	})
+
+	t.Run("Player O wins with the second column", func(t *testing.T) {
+		board := []interface{}{"X", "O", 3, "O", "O", 6, 7, "O", "X"}
+		if !CheckWinner(board, "O") {
+			t.Errorf("expected O to win with a column, but got no winner")
+		}
+	})
+
+	t.Run("Player X wins with the last column", func(t *testing.T) {
+		board := []interface{}{1, "O", "X", "O", 5, "X", 7, "O", "X"}
+		if !CheckWinner(board, "X") {
+			t.Errorf("expected O to win with a column, but got no winner")
+		}
+	})
+
+	t.Run("Player O wins with  diagonal", func(t *testing.T) {
+		board := []interface{}{"O", 2, 3, 4, "O", 6, 7, 8, "O"}
+		if !CheckWinner(board, "O") {
+			t.Errorf("expected O to win with a diagonal, but got no winner")
+		}
+	})
+
+	t.Run("Player X wins with  diagonal", func(t *testing.T) {
+		board := []interface{}{"O", 2, "X", 4, "X", 6, "X", 8, "O"}
+		if !CheckWinner(board, "X") {
+			t.Errorf("expected O to win with a diagonal, but got no winner")
+		}
+	})
+
+	t.Run("No winner", func(t *testing.T) {
+		board := []interface{}{"X", "O", "X", "O", "X", "O", "O", "X", "O"}
+		if CheckWinner(board, "X") || CheckWinner(board, "O") {
+			t.Errorf("expected no winner, but got a winner")
+		}
+	})
+}
+
+func TestGameOver(t *testing.T) {
+	t.Run("Player X wins", func(t *testing.T) {
+		board := []interface{}{"X", "X", "X", 4, 5, 6, 7, 8, 9}
+		over, message := GameOver(board, "X")
+		if !over || message != "X wins!" {
+			t.Errorf("expected game over with message 'Player with token X wins!', got %v, %q", over, message)
+		}
+	})
+
+	t.Run("Player O wins", func(t *testing.T) {
+		board := []interface{}{1, 2, "O", 4, "O", 6, "O", 8, 9}
+		over, message := GameOver(board, "O")
+		if !over || message != "O wins!" {
+			t.Errorf("expected game over with message 'Player with token O wins!', got %v, %q", over, message)
+		}
+	})
+
+	t.Run("Game is a tie", func(t *testing.T) {
+		board := []interface{}{"X", "O", "X", "O", "X", "O", "O", "X", "O"}
+		over, message := GameOver(board, "X")
+		if !over || message != "Tie!" {
+			t.Errorf("expected game over with message 'The game is a tie!', got %v, %q", over, message)
+		}
+	})
+
+	t.Run("Game is not over", func(t *testing.T) {
+		board := []interface{}{1, 2, "X", "O", "X", "O", 7, 8, 9}
+		over, _ := GameOver(board, "X")
+		if over {
+			t.Errorf("expected game not to be over, but got game over")
+		}
+	})
+}

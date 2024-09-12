@@ -13,6 +13,28 @@ func Greeting() string {
  return "Welcome to Tic Tac Toe"
 }
 
+func AskPlayer1Token(input io.Reader) {
+	reader := bufio.NewReader(input)
+
+	for {
+		fmt.Print("Would you like Player 1 to be X or O? ")
+		userInput, _ := reader.ReadString('\n')
+		userInput = strings.TrimSpace(strings.ToUpper(userInput))
+
+		if userInput == "X" {
+        	gameMap.Token1 = "X"
+        	gameMap.Token2 = "O"
+        	break
+        } else if userInput == "O" {
+			gameMap.Token1 = "O"
+			gameMap.Token2 = "X"
+			break
+		} else {
+			fmt.Println("Invalid input. Please enter 'X' or 'O'.")
+		}
+	}
+}
+
 func GetValidMove(board []interface{}) int {
 	for {
 		pos := GetUserInput(os.Stdin)
