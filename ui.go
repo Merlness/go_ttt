@@ -6,43 +6,27 @@ import (
 	"io"
 	"strconv"
 	"strings"
-	"os"
 )
 
 func Greeting() string {
  return "Welcome to Tic Tac Toe"
 }
 
-func AskPlayer1Token(input io.Reader) {
-	reader := bufio.NewReader(input)
-
-	for {
-		fmt.Print("Would you like Player 1 to be X or O? ")
-		userInput, _ := reader.ReadString('\n')
-		userInput = strings.TrimSpace(strings.ToUpper(userInput))
-
-		if userInput == "X" {
-        	gameMap.Token1 = "X"
-        	gameMap.Token2 = "O"
-        	break
-        } else if userInput == "O" {
-			gameMap.Token1 = "O"
-			gameMap.Token2 = "X"
-			break
-		} else {
-			fmt.Println("Invalid input. Please enter 'X' or 'O'.")
-		}
+func assignTokens(choice string) {
+	if choice == "X" {
+		gameMap.Token1 = "X"
+		gameMap.Token2 = "O"
+	} else {
+		gameMap.Token1 = "O"
+		gameMap.Token2 = "X"
 	}
 }
 
-func GetValidMove(board []interface{}) int {
-	for {
-		pos := GetUserInput(os.Stdin)
-
-		if IsValidMove(board, pos) {
-			return pos
-		}
-		fmt.Println("Invalid move, try again.")
+func assignPlayer1Type(choice string) {
+	if choice == "HUMAN" {
+		gameMap.Player1 = "human"
+	} else {
+		gameMap.Player1 = "ai"
 	}
 }
 
@@ -56,23 +40,49 @@ func GetUserInput(input io.Reader) int {
 	return pos
 }
 
-
 func IsValidMove(board []interface{}, pos int) bool {
-		return isBetweenOneAndNine(pos) && !isTakenByToken(board, pos)
+		return isBetweenOneAndNine(pos) && isAvailable(board, pos)
 }
 
-func UpdateBoard(board []interface{}, pos int, mark string) []interface{} {
-	board[pos-1] = mark
-	return board
-}
-
-func isTakenByToken(board []interface{}, pos int) bool {
+func isAvailable(board []interface{}, pos int) bool {
     valueAtPosition := board[pos-1]
     _, isInt := valueAtPosition.(int)
 
-    return !isInt
+    return isInt
 }
 
 func isBetweenOneAndNine(pos int) bool {
 	return pos >= 1 && pos <= 9
+}
+
+func AskPlayer1Token(input io.Reader) {
+	askUserInput(input, "Would you like Player 1 to be X or O? ", map[string]func(string){
+		"X": assignTokens,
+		"O": assignTokens,
+	})
+}
+
+func AskPlayer1Type(input io.Reader) {
+	askUserInput(input, "Would you like Player 1 to be human or ai? ", map[string]func(string){
+		"HUMAN": assignPlayer1Type,
+		"AI":    assignPlayer1Type,
+	})
+}
+
+func askUserInput(input io.Reader, prompt string, validInputs map[string]func(string)) {
+	reader := bufio.NewReader(input)
+
+	for {
+		fmt.Print(prompt)
+		userInput, _ := reader.ReadString('\n')
+		userInput = strings.TrimSpace(strings.ToUpper(userInput))
+
+        assignFunc, ok := validInputs[userInput]
+		if  ok {
+			assignFunc(userInput)
+			break
+		} else {
+			fmt.Println("Invalid input. Please try again.")
+		}
+	}
 }

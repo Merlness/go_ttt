@@ -39,3 +39,20 @@ func TestGlobalGameMap(t *testing.T){
     		}
     	})
 }
+
+func TestAIMakesMoveAtPosition4(t *testing.T) {
+	gameMap.Player1 = "ai"
+	gameMap.Player2 = "human"
+	gameMap.Token1 = "X"
+	gameMap.Token2 = "O"
+
+	board := []interface{}{"X", "O", 3, 4, 5, 6, 7, 8, 9}
+
+	expectedMove := 4
+
+	pos := GetMove(board)
+
+	if pos != expectedMove {
+		t.Errorf("expected AI to make the move at position %d, but got position %d", expectedMove, pos)
+	}
+}

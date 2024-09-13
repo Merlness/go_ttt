@@ -3,7 +3,6 @@ package main
 import (
 	"testing"
 	"strings"
-// 	"fmt"
 )
 
 func TestGetUserInput(t *testing.T) {
@@ -24,37 +23,21 @@ func TestIsValidMove(t *testing.T) {
 	t.Run("valid move", func(t *testing.T) {
 		pos := 3
 		if !IsValidMove(board, pos) {
-			t.Errorf("expected move at position %d to be valid", pos)
+			t.Errorf("expected %d to be valid", pos)
 		}
 	})
 
 	t.Run("invalid move (already taken)", func(t *testing.T) {
 		pos := 5
 		if IsValidMove(board, pos) {
-			t.Errorf("expected move at position %d to be invalid", pos)
+			t.Errorf("expected %d to be invalid", pos)
 		}
 	})
 
 	t.Run("invalid move (out of range)", func(t *testing.T) {
 		pos := 10
 		if IsValidMove(board, pos) {
-			t.Errorf("expected move at position %d to be invalid", pos)
-		}
-	})
-}
-
-func TestUpdateBoard(t *testing.T) {
-	board := []interface{}{1, 2, 3, 4, 5, 6, 7, 8, 9}
-
-	t.Run("update board with 'X'", func(t *testing.T) {
-		pos := 3
-		updatedBoard := UpdateBoard(board, pos, "X")
-		expectedBoard := []interface{}{1, 2, "X", 4, 5, 6, 7, 8, 9}
-
-		for i, v := range updatedBoard {
-			if v != expectedBoard[i] {
-				t.Errorf("expected %v, got %v", expectedBoard, updatedBoard)
-			}
+			t.Errorf("expected %d to be invalid", pos)
 		}
 	})
 }
@@ -103,4 +86,27 @@ func TestAskPlayer1Token(t *testing.T) {
     			t.Errorf("expected Player 1 to be O and Player 2 to be X, got Player 1: %s, Player 2: %s", gameMap.Token1, gameMap.Token2)
     		}
     	})
+}
+
+func TestAskPlayer1Type(t *testing.T) {
+	resetGameMap()
+
+	t.Run("Player 1 chooses human", func(t *testing.T) {
+		input := strings.NewReader("human\n")
+		AskPlayer1Type(input)
+
+		if gameMap.Player1 != "human" {
+			t.Errorf("expected Player 1 to be human, got %s", gameMap.Player1)
+		}
+	})
+
+	t.Run("Player 1 chooses ai", func(t *testing.T) {
+		resetGameMap()
+		input := strings.NewReader("ai\n")
+		AskPlayer1Type(input)
+
+		if gameMap.Player1 != "ai" {
+			t.Errorf("expected Player 1 to be ai, got %s", gameMap.Player1)
+		}
+	})
 }

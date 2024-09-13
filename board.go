@@ -21,7 +21,8 @@ func Display(grid []interface{}) string {
 func countAvailableMoves(board []interface{}) int {
 	intCount := 0
 	for _, v := range board {
-		if _, isInt := v.(int); isInt {
+		_, isInt := v.(int)
+		if  isInt {
 			intCount++
 		}
 	}
@@ -33,22 +34,32 @@ func isPlayerOnesTurn(board []interface{}) bool {
 }
 
 func CurrentPlayerToken(board []interface{}) string {
-
-	if isPlayerOnesTurn(board) {
-		return gameMap.Token1
-	}
-	return gameMap.Token2
+	return getCurrentValue(board, gameMap.Token1, gameMap.Token2)
 }
 
-func GameOver(board []interface{}, token string) (bool, string) {
-	if CheckWinner(board, token) {
-		return true, fmt.Sprintf("%s wins!", token)
-	}
+func OpponentPlayerToken(board []interface{}) string {
+	return getCurrentValue(board, gameMap.Token2, gameMap.Token1)
+}
 
-	if !hasEmptySpaces(board) {
+func CurrentPlayer(board []interface{}) string {
+	return getCurrentValue(board, gameMap.Player1, gameMap.Player2)
+}
+
+func getCurrentValue(board []interface{}, player1Val, player2Val string) string {
+	if isPlayerOnesTurn(board) {
+		return player1Val
+	}
+	return player2Val
+}
+
+func GameOver(board []interface{}, token1 string, token2 string) (bool, string) {
+	if CheckWinner(board, token1) {
+		return true, fmt.Sprintf("%s wins!", token1)
+	} else if CheckWinner(board, token2){
+		return true, fmt.Sprintf("%s wins!", token2)
+	} else if !HasEmptySpaces(board) {
 		return true, "Tie!"
 	}
-
 	return false, ""
 }
 
@@ -60,13 +71,25 @@ func CheckWinner(board []interface{}, token string) bool {
 		checkLines(board, token, diagonals(size))
 }
 
-func hasEmptySpaces(board []interface{}) bool {
-	for _, v := range board {
-		if _, isInt := v.(int); isInt {
+func HasEmptySpaces(board []interface{}) bool {
+	for _, value := range board {
+		_, isInt := value.(int)
+		if  isInt {
 			return true
 		}
 	}
 	return false
+}
+
+func AvailableMoves(board []interface{}) []int {
+	var available []int
+	for _, value := range board {
+		move, isInt := value.(int)
+		if  isInt {
+			available = append(available, move)
+		}
+	}
+	return available
 }
 
 func checkLines(board []interface{}, token string, lines [][]int) bool {
