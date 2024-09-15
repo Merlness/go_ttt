@@ -1,8 +1,5 @@
 package main
 
-import (
-)
-
 var valueMax = -100000
 var valueMin = 100000
 
@@ -20,12 +17,7 @@ func Maximize(board []interface{}, maxToken string, minToken string, depth int) 
     }
 
     for _, action := range AvailableMoves(board) {
-
-        var newBoard []interface{}
-    	for _, value := range board {
-            newBoard = append(newBoard, value)
-    	}
-
+        newBoard := CopyBoard(board)
         UpdateBoard(newBoard, action, maxToken)
         value, _ = minimize(newBoard, maxToken, minToken, depth)
 
@@ -52,11 +44,7 @@ func minimize(board []interface{}, maxToken string, minToken string, depth int) 
     }
 
     for _, action := range AvailableMoves(board) {
-
-        var newBoard []interface{}
-    	for _, value := range board {
-            newBoard = append(newBoard, value)
-    	}
+        newBoard := CopyBoard(board)
         UpdateBoard(newBoard, action, minToken)
         value, _ = Maximize(newBoard, maxToken, minToken, depth)
 
