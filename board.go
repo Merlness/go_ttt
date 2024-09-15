@@ -29,29 +29,6 @@ func countAvailableMoves(board []interface{}) int {
 	return intCount
 }
 
-func isPlayerOnesTurn(board []interface{}) bool {
-	return countAvailableMoves(board) % 2 != 0
-}
-
-func CurrentPlayerToken(board []interface{}) string {
-	return getCurrentValue(board, gameMap.Token1, gameMap.Token2)
-}
-
-func OpponentPlayerToken(board []interface{}) string {
-	return getCurrentValue(board, gameMap.Token2, gameMap.Token1)
-}
-
-func CurrentPlayer(board []interface{}) string {
-	return getCurrentValue(board, gameMap.Player1, gameMap.Player2)
-}
-
-func getCurrentValue(board []interface{}, player1Val, player2Val string) string {
-	if isPlayerOnesTurn(board) {
-		return player1Val
-	}
-	return player2Val
-}
-
 func GameOver(board []interface{}, token1 string, token2 string) (bool, string) {
 	if CheckWinner(board, token1) {
 		return true, fmt.Sprintf("%s wins!", token1)
@@ -159,4 +136,10 @@ func frontDiagonal(size int) []int {
 
 func boardSize(board []interface{}) int {
 	return int(math.Sqrt(float64(len(board))))
+}
+
+func CopyBoard(board []interface{}) []interface{} {
+    newBoard := make([]interface{}, len(board))
+    copy(newBoard, board)
+    return newBoard
 }

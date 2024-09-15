@@ -1,12 +1,11 @@
 package main
 
 import (
-        "testing"
-        "reflect"
-        )
+    "testing"
+)
 
-func resetGameMap() {
-	gameMap = GameMap{
+func resetGameStruct() {
+	gameStruct = Game{
 		Player1: "human",
 		Player2: "human",
 		Token1:  "X",
@@ -24,35 +23,35 @@ func TestGreeting(t *testing.T) {
 	}
 }
 
-func TestGlobalGameMap(t *testing.T){
+func TestGlobalGameStruct(t *testing.T){
 
-		t.Run("check initial gameMap values", func(t *testing.T) {
-    		expected := GameMap{
-    			Player1: "human",
-    			Player2: "human",
-    			Token1:  "X",
-    			Token2:  "O",
-    		}
-
-    		if !reflect.DeepEqual(gameMap, expected) {
-    			t.Errorf("expected %v, got %v", expected, gameMap)
-    		}
-    	})
+	t.Run("check initial gameStruct values", func(t *testing.T) {
+    	expected := Game{
+    		Player1: "human",
+    		Player2: "human",
+    		Token1:  "X",
+    		Token2:  "O",
+    	}
+           resetGameStruct()
+           AssertEqual(t, gameStruct, expected )
+    })
 }
 
-func TestAIMakesMoveAtPosition4(t *testing.T) {
-	gameMap.Player1 = "ai"
-	gameMap.Player2 = "human"
-	gameMap.Token1 = "X"
-	gameMap.Token2 = "O"
+func TestInitializeGameStruct(t *testing.T) {
+    t.Run("Initializes game struct correctly", func(t *testing.T) {
+        gameStruct := Game{}
+        player1Token := "X"
+        player1Kind := "human"
+        player2Kind := "ai"
 
-	board := []interface{}{"X", "O", 3, 4, 5, 6, 7, 8, 9}
+        gameStruct = InitializeGameStruct(gameStruct, player1Token, player1Kind, player2Kind)
 
-	expectedMove := 4
-
-	pos := GetMove(board)
-
-	if pos != expectedMove {
-		t.Errorf("expected AI to make the move at position %d, but got position %d", expectedMove, pos)
-	}
+        expectedGameStruct := Game{
+            Player1: "human",
+            Player2: "ai",
+            Token1:  "X",
+            Token2:  "O",
+        }
+        AssertEqual(t, gameStruct, expectedGameStruct)
+    })
 }
