@@ -93,35 +93,24 @@ func TestIsPlayerOnesTurn(t *testing.T) {
     t.Run("Returns true when it's Player 1's turn", func(t *testing.T) {
         board := []interface{}{"X", "O", "X", 4, "O", 6, 7, 8, 9}
 
-        if !isPlayerOnesTurn(board) {
-            t.Errorf("Expected Player 1's turn")
-        }
+		AssertTrue(t, isPlayerOnesTurn(board), "Expected Player 1's turn")
     })
 
     t.Run("Returns false when it's Player 2's turn", func(t *testing.T) {
         board := []interface{}{"X", "O", "X", "O", "X", 6, 7, 8, 9}
-
-        if isPlayerOnesTurn(board) {
-            t.Errorf("Expected Player 2's turn")
-        }
+		AssertTrue(t, !isPlayerOnesTurn(board), "Expected Player 2's turn")
     })
 }
 
 func TestAreAllInts(t *testing.T) {
     t.Run("Returns true when all board positions are integers", func(t *testing.T) {
         board := []interface{}{1, 2, 3, 4, 5, 6, 7, 8, 9}
-
-        if !areAllInts(board) {
-            t.Errorf("Expected areAllInts to return true")
-        }
+		AssertTrue(t, areAllInts(board), "Expected areAllInts to return true")
     })
 
     t.Run("Returns false when board positions include tokens", func(t *testing.T) {
         board := []interface{}{"X", 2, 3, 4, "O", 6, 7, 8, 9}
-
-        if areAllInts(board) {
-            t.Errorf("Expected areAllInts to return false")
-        }
+		AssertTrue(t, !areAllInts(board), "Expected areAllInts to return false")
     })
 }
 

@@ -12,6 +12,14 @@ func AssertEqual(t testing.TB, got, want interface{}) {
     }
 }
 
+func AssertTrue(t testing.TB, condition bool, msg string) {
+    t.Helper()
+    if !condition {
+        t.Errorf("Assertion failed: %s", msg)
+    }
+}
+
+
 func TestDisplay(t *testing.T) {
 	t.Run("displays the default board", func(t *testing.T) {
 		grid := []interface{}{1, 2, 3, 4, 5, 6, 7, 8, 9}
@@ -60,58 +68,42 @@ func TestCurrentPlayerToken(t *testing.T) {
 func TestCheckWinner(t *testing.T) {
 	t.Run("Player X wins with the first row", func(t *testing.T) {
 		board := []interface{}{"X", "X", "X", 4, 5, 6, 7, 8, 9}
-		if !CheckWinner(board, "X") {
-			t.Errorf("expected X to win")
-		}
+		AssertTrue(t, CheckWinner(board, "X"), "expected X to win")
 	})
 
 	t.Run("Player X wins with the middle row", func(t *testing.T) {
 		board := []interface{}{1, 2, 3, "X", "X", "X", 7, 8, 9}
-		if !CheckWinner(board, "X") {
-			t.Errorf("expected X to win")
-		}
+		AssertTrue(t, CheckWinner(board, "X"), "expected X to win")
 	})
 
 	t.Run("Player O wins with the last row", func(t *testing.T) {
 		board := []interface{}{1, 2, 3, 4, 5, 6,"O", "O", "O"}
-		if !CheckWinner(board, "O") {
-			t.Errorf("expected O to win")
-		}
+		AssertTrue(t, CheckWinner(board, "O"), "expected O to win")
 	})
 
 	t.Run("Player O wins with the first column", func(t *testing.T) {
 		board := []interface{}{"O", 2, 3, "O", 5, 6,"O", "X", "X"}
-		if !CheckWinner(board, "O") {
-			t.Errorf("expected O to win")
-		}
+		AssertTrue(t, CheckWinner(board, "O"), "expected O to win")
 	})
 
 	t.Run("Player O wins with the second column", func(t *testing.T) {
 		board := []interface{}{"X", "O", 3, "O", "O", 6, 7, "O", "X"}
-		if !CheckWinner(board, "O") {
-			t.Errorf("expected O to win")
-		}
+		AssertTrue(t, CheckWinner(board, "O"), "expected O to win")
 	})
 
 	t.Run("Player X wins with the last column", func(t *testing.T) {
 		board := []interface{}{1, "O", "X", "O", 5, "X", 7, "O", "X"}
-		if !CheckWinner(board, "X") {
-			t.Errorf("expected X to win")
-		}
+		AssertTrue(t, CheckWinner(board, "X"), "expected X to win")
 	})
 
 	t.Run("Player O wins with  diagonal", func(t *testing.T) {
 		board := []interface{}{"O", 2, 3, 4, "O", 6, 7, 8, "O"}
-		if !CheckWinner(board, "O") {
-			t.Errorf("expected O to win")
-		}
+		AssertTrue(t, CheckWinner(board, "O"), "expected O to win")
 	})
 
 	t.Run("Player X wins with  diagonal", func(t *testing.T) {
 		board := []interface{}{"O", 2, "X", 4, "X", 6, "X", 8, "O"}
-		if !CheckWinner(board, "X") {
-			t.Errorf("expected X to win")
-		}
+		AssertTrue(t, CheckWinner(board, "X"), "expected X to win")
 	})
 
 	t.Run("No winner", func(t *testing.T) {
@@ -150,9 +142,8 @@ func TestGameOver(t *testing.T) {
 	t.Run("Game is not over", func(t *testing.T) {
 		board := []interface{}{1, 2, "X", "O", "X", "O", 7, 8, 9}
 		over, _ := GameOver(board, "X", "O")
-		if over {
-			t.Errorf("expected game not to be over, but got game over")
-		}
+
+		AssertTrue(t, !over, "expected game not to be over, but got game over")
 	})
 }
 

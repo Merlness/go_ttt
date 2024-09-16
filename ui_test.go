@@ -20,23 +20,18 @@ func TestIsValidMove(t *testing.T) {
 
 	t.Run("valid move", func(t *testing.T) {
 		pos := 3
-		if !IsValidMove(board, pos) {
-			t.Errorf("expected %d valid", pos)
-		}
+        AssertTrue(t, IsValidMove(board, pos), "expected pos to be valid")
+
 	})
 
 	t.Run("invalid move", func(t *testing.T) {
 		pos := 5
-		if IsValidMove(board, pos) {
-			t.Errorf("expected %d ", pos)
-		}
+        AssertTrue(t, !IsValidMove(board, pos), "expected pos to be invalid")
 	})
 
 	t.Run("invalid move", func(t *testing.T) {
 		pos := 10
-		if IsValidMove(board, pos) {
-			t.Errorf("expected %d invalid", pos)
-		}
+	    AssertTrue(t, !IsValidMove(board, pos), "expected pos to be invalid")
 	})
 }
 

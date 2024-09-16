@@ -17,10 +17,7 @@ func TestGreeting(t *testing.T) {
 
     got := Greeting()
 	want := "Welcome to Tic Tac Toe"
-
-	if got != want {
-		t.Errorf("got %q want %q", got, want)
-	}
+	AssertEqual(t, got, want)
 }
 
 func TestGlobalGameStruct(t *testing.T){
